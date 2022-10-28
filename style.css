@@ -1,0 +1,29 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: 'Silkscreen', cursive;
+}
+canvas {
+	width: 600px !important;
+	height: 600px !important;
+	image-rendering: pixelated;
+}
+
+@font-face {
+	font-family: 'Rainy Hearts';
+	src: url('assets/font/rainyhearts.ttf');
+}
+button {
+	font-family: 'Rainy Hearts';
+}
+.actionButton {
+	width: 180px;
+	height: 50px;
+	border-radius: 5px;
+	/* background-color: #cf6831; */
+	border-color: #8f5535;
+	font-size: 28px;
+	/* color: white; */
+}
