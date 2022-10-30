@@ -1,37 +1,50 @@
 /* ------------------- INPUT CONTROLLERS ------------------- */
 
 function createButtons() {
+	// let newCanvas = newCanvasSize();
+	// translate(newCanvas.x, newCanvas.y);
 	readyButton = createButton("I'M READY!");
-	readyButton.addClass('actionButton');
-	readyButton.position(210, 490);
-	readyButton.style('background-color: #CF6831');
-	readyButton.mousePressed(changeState);
-
 	startGameButton = createButton('START');
-	startGameButton.addClass('actionButton');
-	startGameButton.position(220, 490);
-	startGameButton.mousePressed(() => {
-		if (guests.length === 4) changeState();
-	});
-
 	restartButton_win = createButton('RESTART');
-	restartButton_win.addClass('actionButton');
-	restartButton_win.position(210, 490);
-	restartButton_win.style('background-color: #CF6831');
-	restartButton_win.mousePressed(restart);
-
 	restartButton_lose = createButton('TRY AGAIN');
-	restartButton_lose.addClass('actionButton');
-	restartButton_lose.position(210, 490);
-	restartButton_lose.style('background-color: #CF6831');
-	restartButton_lose.mousePressed(restart);
+
+	let buttonList = [
+		readyButton,
+		startGameButton,
+		restartButton_win,
+		restartButton_lose,
+	];
+
+	for (let i = 0; i < 4; i++) {
+		buttonList[i].parent('cnv');
+		if (i === 1) {
+			buttonList[i].position(116, 324);
+		} else {
+			buttonList[i].position(110, 324);
+		}
+		buttonList[i].style('textFont: fonts.rainyHeart');
+		buttonList[i].style('background-color:' + COLORS.button_active);
+		buttonList[i].style('border-color:' + COLORS.button_border);
+		buttonList[i].style('width', '180px');
+		buttonList[i].style('height', '50px');
+		buttonList[i].style('border-radius: 5px');
+		buttonList[i].style('fontSize: 28px');
+		buttonList[i].style('color: white');
+		if (i === 1) {
+			buttonList[i].mousePressed(() => {
+				if (guests.length === 4) changeState();
+			});
+		} else {
+			buttonList[i].mousePressed(changeState);
+		}
+	}
 }
 
 function changeButtonStyle() {
 	if (guests.length < 4) {
-		startGameButton.style('background-color: #F8C6AB'); // inactive color
+		startGameButton.style('background-color:' + COLORS.button_inactive); // inactive color
 	} else if (guests.length === 4) {
-		startGameButton.style('background-color: #CF6831'); // active color
+		startGameButton.style('background-color:' + COLORS.button_active); // active color
 	}
 }
 
@@ -43,6 +56,9 @@ function hideButtons() {
 }
 
 function keyPressed() {
+	if(isWall(me.row, me.col - 1)){
+		sounds.hitWall.play();
+	}
 	if (keyCode === LEFT_ARROW && !isWall(me.row, me.col - 1)) {
 		me.col--;
 		me.direction = 'left';

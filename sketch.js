@@ -41,6 +41,8 @@ function preload() {
 	images.winGateGIF = loadImage('assets/scene/win_gate.gif');
 	images.clock = loadImage('assets/obj/clock.png');
 	images.lampOil = loadImage('assets/obj/lampOil.png');
+	CLOCK.img = images.clock;
+	LAMP_OIL.img = images.lampOil;
 	// reference: https://stackoverflow.com/questions/2383484/how-to-create-a-dynamic-object-in-a-loop
 	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
 		AVATAR[i] = {};
@@ -55,18 +57,51 @@ function preload() {
 	// load fonts
 	fonts.rainyHeart = loadFont('assets/font/rainyhearts.ttf');
 	// load sound
-	sounds.bgm = loadSound('assets/sound/lamplighter_BGM.mp3');
+	sounds.bgm = loadSound('assets/sound/bgm/lamplighter_BGM.mp3');
+	sounds.clickButton = loadSound('assets/sound/sfx/button.mp3');
+	sounds.light_on = loadSound('assets/sound/sfx/light_on.mp3');
+	sounds.lose = loadSound('assets/sound/sfx/lose.mp3');
+	sounds.win = loadSound('assets/sound/sfx/win.mp3');
+	sounds.pickup = loadSound('assets/sound/sfx/pickup.mp3');
+	sounds.hitWall = loadSound('assets/sound/sfx/wall.mp3');
+}
+
+window.addEventListener('resize', () => {
+	//update size
+	size.width = window.innerWidth;
+	size.height = window.innerHeight;
+});
+
+function newCanvasSize() {
+	let x = (size.width - canvasSize.width) / 2;
+	let y = (size.height - canvasSize.height) / 2 - 50;
+	return { x: x, y: y };
+}
+
+function relocateCanvas() {
+	let newCanvas = newCanvasSize();
+	//relocate canvas
+	canvas.position(newCanvas.x, newCanvas.y);
+	//console.log(size, canvasSize, newCanvasSize());
+
+	//relocate buttons
+	readyButton.position(110 + newCanvas.x, 324 + newCanvas.y);
+	startGameButton.position(116 + newCanvas.x, 324 + newCanvas.y);
+	restartButton_win.position(110 + newCanvas.x, 324 + newCanvas.y);
+	restartButton_lose.position(110 + newCanvas.x, 324 + newCanvas.y);
 }
 
 function setup() {
 	pixelDensity(1);
-	createCanvas(400, 400);
+	canvas = createCanvas(canvasSize.width, canvasSize.height);
+	canvas.parent('cnv');
 	textAlign(CENTER, CENTER);
-	//textFont(fonts.rainyHeart);
+	textFont(fonts.rainyHeart);
+	//frameRate(1);
 
 	// calculate the total number of rows and columns in the canvas
-	rowNum = height / GRID_SIZE;
-	colNum = width / GRID_SIZE;
+	rowCount = canvasSize.height / GRID_SIZE;
+	colCount = canvasSize.width / GRID_SIZE;
 
 	moveCamera(me.row * GRID_SIZE, me.col * GRID_SIZE);
 
@@ -83,12 +118,13 @@ function setup() {
 			countdown: COUNT_DOWN,
 			score: SCORE,
 			players: PLAYERS, // all players in the game
-			clock: { xPos: 0, yPos: 0, img: images.clock },
-			lampOil: { xPos: 0, yPos: 0, img: images.lampOil },
+			clock: [CLOCK._row, CLOCK._col], // cannot pass an image object in 'shared'
+			lampOil: [LAMP_OIL._row, LAMP_OIL._col],
+			playerAtGate: 0,
 		});
 	}
 
-	togglePanel();
+	//togglePanel();
 	createButtons();
 	assignPosition();
 }
@@ -96,7 +132,7 @@ function setup() {
 function draw() {
 	background(0);
 	assignPlayers();
-	noSmooth();
+	relocateCanvas();
 
 	switch (shared.gameState_Name) {
 		case 'title':
@@ -104,6 +140,7 @@ function draw() {
 			break;
 		case 'intro':
 			introState();
+			document.getElementById("role").innerHTML = "You're the " + me.role;
 			break;
 		case 'main':
 			mainState();
@@ -116,6 +153,7 @@ function draw() {
 			break;
 	}
 
+	// noSmooth();
 	// noLoop();
 }
 
@@ -143,25 +181,24 @@ function isGate(row, col) {
 	}
 }
 
-function isClock(row,col){
-	if(
-		row == shared.clock.yPos / GRID_SIZE,
-		col == shared.clock.xPos / GRID_SIZE
-	){
+function isClock(row, col) {
+	shared['clock'][0] = CLOCK._row;
+	shared['clock'][1] = CLOCK._col;
+	// console.log(shared["clock"][0],shared["clock"][1],row,col)
+	if (row === shared['clock'][0] && col === shared['clock'][1]) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
 
-
-function isLampOil(row,col){
-	if(
-		row == shared.lampOil.yPos / GRID_SIZE,
-		col == shared.lampOil.xPos / GRID_SIZE
-	){
+function isLampOil(row, col) {
+	shared['lampOil'][0] = LAMP_OIL._row;
+	shared['lampOil'][1] = LAMP_OIL._col;
+	// console.log(shared["lampOil"][0],shared["lampOil"][1],row,col)
+	if (row === shared['lampOil'][0] && col === shared['lampOil'][1]) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -170,6 +207,7 @@ function isLampOil(row,col){
 
 function changeState(win_or_lose_string) {
 	console.log(shared.gameState_Name);
+	sounds.clickButton.play();
 	if (shared.gameState_Name === 'title') {
 		shared.gameState_Name = 'intro';
 	} else if (shared.gameState_Name === 'intro') {
@@ -184,29 +222,43 @@ function changeState(win_or_lose_string) {
 		win_or_lose_string === 'losing'
 	) {
 		shared.gameState_Name = 'losing';
-	} else {
+	} else if (
+		shared.gameState_Name === 'winning' ||
+		shared.gameState_Name === 'losing'
+	) {
 		shared.gameState_Name = 'title';
+		restart();
 	}
 }
 
 function restart() {
-	changeState();
 	shared.countdown = COUNT_DOWN;
 	shared.score = SCORE;
 	assignPosition();
 }
 
-function generateRandomNum() {
-	let row = int(random(0 + 5, rowNum - 5));
-	let col = int(random(0 + 5, colNum - 5));
-	if (!isWall(row, col)) {
-		let position = {
-			xPos: col * GRID_SIZE,
-			yPos: row * GRID_SIZE
+function generateRandomPosition() {
+	// generate clock at a random position
+	let row, col;
+	do {
+		row = floor(random(0 + 5, rowCount - 5));
+		col = floor(random(0 + 5, colCount - 5));
+	} while (isWall(row, col)); // this needs to be false to end do-while
+	// return row, col when it hits the wall (isWall == true)
+	return {
+		row: row,
+		col: col,
+		xPos: col * GRID_SIZE,
+		yPos: row * GRID_SIZE,
+	};
+}
+
+function calcPlayerAtGate() {
+	let playerAtGate = 0;
+	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
+		if (isGate(guests[i].row, guests[i].col)) {
+			playerAtGate++;
 		}
-		console.log(position);
-		return position;
-	} else {
-		generateRandomNum();
 	}
+	shared.playerAtGate = playerAtGate;
 }

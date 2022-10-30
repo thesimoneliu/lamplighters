@@ -3,8 +3,8 @@
 function drawGrid() {
 	//image(images.mapCollision, 0, 0);
 
-	for (let row = 0; row < rowNum; row++) {
-		for (let col = 0; col < colNum; col++) {
+	for (let row = 0; row < rowCount; row++) {
+		for (let col = 0; col < colCount; col++) {
 			// draw Grid
 			noFill();
 			stroke(20);

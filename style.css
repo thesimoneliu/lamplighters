@@ -4,10 +4,12 @@ body {
 	padding: 0;
 	overflow: hidden;
 	font-family: 'Silkscreen', cursive;
+	background-color: black;
 }
+
 canvas {
-	width: 600px !important;
-	height: 600px !important;
+	/* width: 800px !important;
+	height: 800px !important; */
 	image-rendering: pixelated;
 }
 
@@ -18,12 +20,30 @@ canvas {
 button {
 	font-family: 'Rainy Hearts';
 }
-.actionButton {
-	width: 180px;
-	height: 50px;
-	border-radius: 5px;
-	/* background-color: #cf6831; */
-	border-color: #8f5535;
-	font-size: 28px;
-	/* color: white; */
+
+#cnv {
+	position: static;
+}
+
+#player-role {
+	position: absolute;
+	width: 100%;
+	bottom: 300px;
+	text-align: center;
+	padding: 0;
+	color: white;
+	font-size: 15px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+
+#game-rules {
+	position: absolute;
+	width: 100%;
+	bottom: 50px;
+	text-align: left;
+	padding: 0;
+	color: white;
+	font-size: 15px;
+	font-family: 'Courier New', Courier, monospace;
 }

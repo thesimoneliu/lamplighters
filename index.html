@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/addons/p5.sound.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap"
-      rel="stylesheet"
-    />
-    
-  </head>
-  <body>
-    <main></main>
-    <!-- <script src="test.js"></script> -->
-    <script src="./jsComponents/publicVars.js"></script>
-    <script src="sketch.js"></script>
-    <script src="./jsComponents/playermanagement.js"></script>
-    <script src="./jsComponents/light.js"></script>
-    <script src="./jsComponents/gamestate.js"></script>
-    <script src="./jsComponents/cam.js"></script>
-    <script src="./jsComponents/input.js"></script>
-    <script src="./jsComponents/debugtool.js"></script>
-    
-  </body>
+	<head>
+		<meta charset="utf-8" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/addons/p5.sound.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap"
+			rel="stylesheet" />
+	</head>
+	<body>
+		<div id="cnv">
+			<!-- <script src="./test/removeimage.js"></script>-->
+			<script src="./jsComponents/publicVars.js"></script>
+			<script src="sketch.js"></script>
+			<script src="./jsComponents/playermanagement.js"></script>
+			<script src="./jsComponents/light.js"></script>
+			<script src="./jsComponents/gamestate.js"></script>
+			<script src="./jsComponents/cam.js"></script>
+			<script src="./jsComponents/input.js"></script>
+			<script src="./jsComponents/debugtool.js"></script>
+		</div>
+		<div id="player-role">
+			<p id="role"></p>
+		</div>
+		<div id="game-rules">
+			<p>
+				How to Play<br />
+				1. Press `Arrow Keys (←→↓↑)` or `WASD` to control the direction of the
+				character.<br />
+				2. Collect clock to increase time; collect lamp oil to extend vision.<br />
+				3. All players need to reach the exit gate to win the game within time
+				limit.<br />
+			</p>
+			<p>
+				Tips<br />
+				1. You can only see areas within your light scope. <br />
+				2. Try to find other lamplighters! <br />
+				3. Try to explore the map more. There is always a surprise elsewhere.<br />
+			</p>
+		</div>
+	</body>
 </html>

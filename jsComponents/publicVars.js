@@ -1,28 +1,37 @@
 let images = {};
-let fonts ={};
+let fonts = {};
 let sounds = {};
 let me, shared, guests;
-
-const GAME_STATE = {title:"title"};
+let canvas;
 
 const GRID_SIZE = 8; // the size of a single grid: 8px * 8px
-let rowNum, colNum; // the number rows and columns in the canvas
+let rowCount, colCount; // the number rows and columns in the canvas
 
-// vars passed to shared
-const COUNT_DOWN = 100;
-const SCORE = 0;
-const PLAYER_NUM_LIMIT = 4;
-
-let LIGHT_RADIUS = 10;
-let biggerLight = false;
-// let nearbyPlayer = [];
-let nearbySum = 0;
+const canvasSize = {
+	width: 400,
+	height: 400,
+};
+const size = {
+	width: window.innerWidth,
+	height: window.innerHeight,
+};
 
 const SCALEX = 4;
 const SCALEY = 4;
 // const VIEW_WIDTH = 400/GRID_SIZE/SCALEX;
 // const VIEW_HEIGHT = 400/GRID_SIZE/SCALEY;
 const mainCamera = { x: 0, y: 0 };
+
+// variables passed to shared
+const COUNT_DOWN = 100;
+const SCORE = 5;
+const PLAYER_NUM_LIMIT = 4;
+
+let lightRadius = 10;
+let biggerLight = false;
+let nearbySum = 0;
+let gapTimeLastPickup_clock = 0;
+let gapTimeLastPickup_lampOil = 0;
 
 // The localPlayerData is a map of guests to local data
 // on each particpant. This is used to keep track of a transition position
@@ -34,7 +43,7 @@ const AVATAR = [];
 const GATE = {
 	row: 22 + 4 - 2, //24
 	col: 20 + 5 - 2, //23
-	width: 6,  //29
+	width: 6, //29
 	height: 4, //28
 };
 
@@ -56,3 +65,40 @@ const PLAYERS = [
 		col: 45,
 	},
 ];
+
+const CLOCK = {
+	count: 3,
+	workingDuration: 20,
+	gapDuration: 15,
+	_row: 0,
+	_col: 0,
+	_xPos: function () {
+		return this._col * GRID_SIZE;
+	},
+	_yPos: function () {
+		return this._row * GRID_SIZE;
+	},
+	status: 'hide',
+};
+
+const LAMP_OIL = {
+	count: 3,
+	workingDuration: 20,
+	gapDuration: 20,
+	_row: 0,
+	_col: 0,
+	_xPos: function () {
+		return this._col * GRID_SIZE;
+	},
+	_yPos: function () {
+		return this._row * GRID_SIZE;
+	},
+	status: 'hide',
+};
+
+const COLORS = {
+	button_active: '#CF6831',
+	button_border: '#8f5535',
+	button_inactive: '#F8C6AB',
+	intro_text: '#FFB036',
+};
