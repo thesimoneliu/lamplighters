@@ -28,7 +28,7 @@ button {
 #player-role {
 	position: absolute;
 	width: 100%;
-	bottom: 300px;
+	bottom: 20%;
 	text-align: center;
 	padding: 0;
 	color: white;
@@ -40,8 +40,8 @@ button {
 #game-rules {
 	position: absolute;
 	width: 100%;
-	bottom: 50px;
-	text-align: left;
+	bottom: 0;
+	text-align: center;
 	padding: 0;
 	color: white;
 	font-size: 15px;
