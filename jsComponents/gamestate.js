@@ -3,7 +3,11 @@
 /* ------------ state name: title ---------- */
 function titleState() {
 	push();
+	//startscene images
 	image(images.startBG, 0, 0, 400, 400);
+	image(images.light, 0, 0, 400, 400);
+	image(images.lamp, 60, 80, 280, 280);
+	///buttons
 	hideButtons();
 	readyButton.show();
 	pop();
@@ -24,37 +28,48 @@ function onboardingState() {
 
 	// text showing the number of players in room
 	push();
-	textAlign(CENTER);
 
 	if (guests.length < 4) {
-		textSize(12);
+		textSize(16);
 		// display how many players logged in
 		fill(COLORS.intro_text);
-		text(guests.length, width / 2 - 60, 60);
+		//text(guests.length, width / 2 - 95, 60);
+		text(guests.length + ' /4', width / 2 - 100, 60);
 		fill(COLORS.intro_caption);
-		text(' /4 players in your team', width / 2, 60);
+		text('players in your team, waiting...', width / 2 - 70, 60);
 	} else {
 		// calculate how many players are at the gate
 		calcPlayerAtGate();
 		if (shared.playerAtGate < 4) {
 			fill(COLORS.intro_caption);
-			textSize(12);
+			textSize(16);
 			// display successful team
-			text('Your team is built', width / 2, 50);
-			text('Get to the exit together', width / 2, 62);
-			text('You cannot win alone', width / 2, 74);
+			text('Your team is built', width / 2 - 66, 50);
+			text('Get to the exit together', width / 2 - 70, 62);
+			text('You cannot win alone', width / 2 - 66, 74);
 
 			// display how many players are at the gate
 			fill(COLORS.intro_text);
 			textSize(16);
-			text(shared.playerAtGate + ' /4 players at the exit', width / 2, 100);
+			text(
+				shared.playerAtGate + ' /4 players at the exit',
+				width / 2 - 70,
+				100
+			);
 		} else {
 			fill(COLORS.intro_text);
 			textSize(16);
-			text('Your team made it to the exit!', width / 2, 82);
+			text('Your team made it to the exit!', width / 2 - 66, 82);
 		}
 	}
 	pop();
+
+	if (me.role === 'observer') {
+		fill(COLORS.button_border);
+		textSize(12);
+		// display successful team
+		text('[You are the observer]', width / 2, 380);
+	}
 
 	if (
 		isGate(shared.gameState_Name, guests[0].row, guests[0].col) &&
@@ -74,14 +89,31 @@ function introState() {
 	assignPosition();
 
 	push();
-
+	// intro images
 	image(images.IntroBG, 0, 0, 400, 400);
+	image(images.enterdoor, 100, 120, 200, 200);
+	image(images.lampOil, 50, 155, 20, 20);
+	image(images.clock, 240, 155, 20, 20);
+	//buttons
 	hideButtons();
-	// display loading text
-	textAlign(CENTER);
-	textSize(20);
+
+	//title
+	push();
+	// textAlign(CENTER);
+	fill('white');
+	textFont(fonts.zero4);
+	textSize(24);
+	//fill(251,176,64);
+	text('HOW TO PLAY', 80, 60);
+
+	textSize(16);
 	fill(255);
-	text('Loading', width / 2, 310);
+	text('This is a 4-player game. To win the game, all', 50, 100);
+	text('the players need to be at the door within the time', 50, 120);
+	text("limit. Be each other's light!", 50, 140);
+	text(': light scope+1', 80, 170);
+	text(': time+20', 270, 170);
+	pop();
 
 	// countdown 10 seconds
 	if (frameCount % 30 === 0) {
@@ -96,6 +128,7 @@ function introState() {
 
 /* ------------ state name: main ---------- */
 function mainState() {
+	push();
 	// setPosition();
 	hideButtons();
 	fill('white');
@@ -125,7 +158,7 @@ function mainState() {
 	// show other players
 	drawAllPlayers();
 	image(AVATAR[me.avatar][me.direction], me.xPos, me.yPos);
-	drawGrid();
+	// drawGrid();
 	// console.log(me.role, me.avatar, me.xPos, me.yPos);
 
 	/* -------------- Objects -------------- */
@@ -201,45 +234,89 @@ function mainState() {
 	// 	isGate(shared.gameState_Name,guests[3].row, guests[3].col)
 	// );
 
+	pop();
+
 	/* -------------- UI Elements: Countdown & Score -------------- */
 	push();
-	textAlign(CENTER);
-	textSize(16 / SCALEX);
+	textAlign(LEFT);
+	textSize(16);
 	fill(255);
 	let countdownDisplay = 'TIME LEFT : ' + shared.countdown;
-	text(
-		countdownDisplay,
-		me.xPos - width / SCALEX / 3.5,
-		me.yPos - height / SCALEY / 3
-	);
+	text(countdownDisplay, 0, 16);
 	let playerAtGateDisplay = 'PLAYERS AT THE GATE : ' + shared.playerAtGate;
-	text(
-		playerAtGateDisplay,
-		me.xPos + 20 - width / SCALEX / 3.5,
-		me.yPos + 15 - height / SCALEY / 3
-	);
+	text(playerAtGateDisplay, 0, 26);
+	textAlign(RIGHT);
 	let scoreDisplay = 'LIGHT SCOPE: ' + shared.score;
-	text(
-		scoreDisplay,
-		me.xPos - 30 + width / SCALEX / 2.5,
-		me.yPos - height / SCALEY / 3
-	);
+	text(scoreDisplay, 400, 16);
 	pop();
+
+	/* -------------- UI Elements-old: Countdown & Score -------------- */
+	// push();
+	// textAlign(CENTER);
+	// textSize(16 / SCALEX);
+	// fill(255);
+	// let countdownDisplay = 'TIME LEFT : ' + shared.countdown;
+	// text(
+	// 	countdownDisplay,
+	// 	me.xPos - width / SCALEX / 3.5,
+	// 	me.yPos - height / SCALEY / 3
+	// );
+	// let playerAtGateDisplay = 'PLAYERS AT THE GATE : ' + shared.playerAtGate;
+	// text(
+	// 	playerAtGateDisplay,
+	// 	me.xPos + 20 - width / SCALEX / 3.5,
+	// 	me.yPos + 15 - height / SCALEY / 3
+	// );
+	// let scoreDisplay = 'LIGHT SCOPE: ' + shared.score;
+	// text(
+	// 	scoreDisplay,
+	// 	me.xPos - 30 + width / SCALEX / 2.5,
+	// 	me.yPos - height / SCALEY / 3
+	// );
+	// pop();
 }
 
 /* ------------ state name: winning ---------- */
 function winningState() {
-	image(images.winBG, 0, 0, 400, 400);
+	push();
+	background(38, 32, 31);
+	image(images.winBG, -10, 0);
+	//sounds.win.play();
+
+	push();
+	fill('white');
+	textFont(fonts.zero4);
+	textSize(20);
+	//fill(251,176,64);
+	text('Congratulations!', 70, 60);
+	text('you win!', 140, 100);
+	pop();
+
+	//buttons
 	restartButton_win.show();
-	sounds.win.play();
+	//sounds.win.play();
 	if (isGate(shared.gameState_Name, me.row, me.col)) {
 		console.log('you win');
 	}
+
+	pop();
 }
 
 /* ------------ state name: losing --------- */
 function losingState() {
+	push();
+	background(38, 32, 31);
 	image(images.loseBG, 0, 0, 400, 400);
+	push();
+	fill('white');
+	textFont(fonts.zero4);
+	textSize(20);
+	//fill(251,176,64);
+	text('Oops!', 170, 60);
+	text('Maybe next time!', 80, 100);
+	pop();
+
 	restartButton_lose.show();
-	sounds.lose.play();
+	//sounds.lose.play();
+	pop();
 }

@@ -16,7 +16,7 @@ function drawGrid() {
 			let txt = col === 0 ? row : col;
 			text(txt, col * GRID_SIZE + 4, row * GRID_SIZE + 4);
 			// draw flag
-			if (isWall(row, col)) {
+			if (isWall(shared.gameState_Name,row, col)) {
 				fill('red');
 				noStroke();
 				rect(col * GRID_SIZE + 4, row * GRID_SIZE + 4, 2);

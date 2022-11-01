@@ -21,7 +21,7 @@ button {
 	font-family: 'Rainy Hearts';
 }
 
-#cnv {
+#canvas-wrap {
 	position: static;
 }
 

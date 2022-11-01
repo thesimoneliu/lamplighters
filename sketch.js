@@ -15,7 +15,7 @@ function preload() {
 	partyConnect(
 		'wss://deepstream-server-1.herokuapp.com',
 		'Lamplighters_ver4.0_final_1101',
-		'main'
+		'main1'
 	);
 
 	shared = partyLoadShared('globals'); // load shared
@@ -37,14 +37,26 @@ function preload() {
 	);
 	images.mapDisplay_main = loadImage('assets/map/map-main.png');
 	images.mapDisplay_onboarding = loadImage('assets/map/map-onboarding.png');
-	images.startBG = loadImage('assets/scene/startScene.gif');
-	images.IntroBG = loadImage('assets/scene/introScene.gif');
-	images.loseBG = loadImage('assets/scene/loseScene.gif');
-	images.winBG = loadImage('assets/scene/winScene.gif');
+
+	//startScene
+	images.startBG = loadImage('assets/scene/startBG.png');
+	images.lamp = loadImage('assets/scene/lamp.gif');
+	images.light = loadImage('assets/scene/light.gif');
+
+	//introScene
+	images.IntroBG = loadImage('assets/scene/introBG.png');
+	images.enterdoor = loadImage('assets/scene/enterdoor.gif');
+
+	//lose
+	images.loseBG = loadImage('assets/scene/lose.gif');
+
+	//win
+	images.winBG = loadImage('assets/scene/win.gif');
 	images.clock = loadImage('assets/obj/clock.png');
 	images.lampOil = loadImage('assets/obj/lampOil.png');
 	CLOCK.img = images.clock;
 	LAMP_OIL.img = images.lampOil;
+
 	// reference: https://stackoverflow.com/questions/2383484/how-to-create-a-dynamic-object-in-a-loop
 	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
 		AVATAR[i] = {};
@@ -58,6 +70,8 @@ function preload() {
 	// console.log(AVATAR);
 	// load fonts
 	fonts.rainyHeart = loadFont('assets/font/rainyhearts.ttf');
+	fonts.zero4 = loadFont('assets/font/04B.TTF');
+
 	// load sound
 	sounds.bgm = loadSound('assets/sound/bgm/lamplighter_BGM.mp3');
 	sounds.clickButton = loadSound('assets/sound/sfx/button.mp3');
@@ -87,17 +101,17 @@ function relocateCanvas() {
 	//console.log(size, canvasSize, newCanvasSize());
 
 	//relocate buttons
-	readyButton.position(110 + newCanvas.x, 324 + newCanvas.y);
-	startGameButton.position(116 + newCanvas.x, 324 + newCanvas.y);
-	restartButton_win.position(110 + newCanvas.x, 324 + newCanvas.y);
-	restartButton_lose.position(110 + newCanvas.x, 324 + newCanvas.y);
+	// readyButton.position(110 + newCanvas.x, 324 + newCanvas.y);
+	// startGameButton.position(116 + newCanvas.x, 324 + newCanvas.y);
+	// restartButton_win.position(110 + newCanvas.x, 324 + newCanvas.y);
+	// restartButton_lose.position(110 + newCanvas.x, 324 + newCanvas.y);
 }
 
 function setup() {
 	pixelDensity(1);
 	canvas = createCanvas(canvasSize.width, canvasSize.height);
-	canvas.parent('cnv');
-	textAlign(CENTER, CENTER);
+	canvas.parent('canvas-wrap');
+	//textAlign(CENTER, CENTER);
 	textFont(fonts.rainyHeart);
 	//frameRate(1);
 
@@ -131,15 +145,13 @@ function setup() {
 	//togglePanel();
 	createButtons();
 	assignPosition();
-	// sounds.bgm.play();
+	//sounds.bgm.play();
 }
 
 function draw() {
-	
 	background(0);
 	relocateCanvas();
 	assignPlayers();
-	
 
 	switch (shared.gameState_Name) {
 		case 'title':
@@ -178,7 +190,7 @@ function isWall(gameState_Name, row, col) {
 	} else if (gameState_Name === 'onboarding') {
 		color = images.mapCollision_onboarding.get(posX + 4, posY + 4);
 	}
-	console.log(gameState_Name, row, col, posX, posY, color, color[3]);
+	// console.log(gameState_Name, row, col, posX, posY, color, color[3]);
 	return color[3] === 255; // checking alpha channel
 }
 
@@ -261,7 +273,7 @@ function changeState(win_or_lose_str) {
 
 function restart() {
 	shared.countdown = COUNT_DOWN;
-	shared.countdown_onBoarding= COUNT_DOWN_ONBOARDING;
+	shared.countdown_onBoarding = COUNT_DOWN_ONBOARDING;
 	shared.score = SCORE;
 	shared.playerAtGate = PLAYER_AT_GATE;
 	assignPosition();

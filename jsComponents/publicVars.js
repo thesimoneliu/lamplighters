@@ -20,8 +20,8 @@ const canvasZoomSize = {
 	height: 800,
 };
 
-const SCALEX = 1;
-const SCALEY = 1;
+const SCALEX = 4;
+const SCALEY = 4;
 // const VIEW_WIDTH = 400/GRID_SIZE/SCALEX;
 // const VIEW_HEIGHT = 400/GRID_SIZE/SCALEY;
 const mainCamera = { x: 0, y: 0 };
