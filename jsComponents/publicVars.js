@@ -28,7 +28,7 @@ const mainCamera = { x: 0, y: 0 };
 
 // variables passed to shared
 const COUNT_DOWN = 80;
-const COUNT_DOWN_ONBOARDING = 10;
+const COUNT_DOWN_ONBOARDING = 24;
 const SCORE = 5;
 const PLAYER_NUM_LIMIT = 4;
 const PLAYER_AT_GATE = 0;

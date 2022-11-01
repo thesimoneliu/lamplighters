@@ -91,7 +91,7 @@ function introState() {
 	push();
 	// intro images
 	image(images.IntroBG, 0, 0, 400, 400);
-	image(images.enterdoor, 100, 120, 200, 200);
+	image(images.enterdoor, 100, 120, 200, 240);
 	image(images.lampOil, 50, 155, 20, 20);
 	image(images.clock, 240, 155, 20, 20);
 	//buttons
@@ -107,6 +107,7 @@ function introState() {
 	text('HOW TO PLAY', 80, 60);
 
 	textSize(16);
+	textFont(fonts.rainyHeart);
 	fill(255);
 	text('This is a 4-player game. To win the game, all', 50, 100);
 	text('the players need to be at the door within the time', 50, 120);
@@ -128,6 +129,7 @@ function introState() {
 
 /* ------------ state name: main ---------- */
 function mainState() {
+	sounds.bgm.setVolume(0.8);
 	push();
 	// setPosition();
 	hideButtons();
@@ -244,7 +246,7 @@ function mainState() {
 	let countdownDisplay = 'TIME LEFT : ' + shared.countdown;
 	text(countdownDisplay, 0, 16);
 	let playerAtGateDisplay = 'PLAYERS AT THE GATE : ' + shared.playerAtGate;
-	text(playerAtGateDisplay, 0, 26);
+	text(playerAtGateDisplay, 0, 32);
 	textAlign(RIGHT);
 	let scoreDisplay = 'LIGHT SCOPE: ' + shared.score;
 	text(scoreDisplay, 400, 16);

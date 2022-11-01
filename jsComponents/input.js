@@ -20,7 +20,7 @@ function createButtons() {
 		buttonList[i].parent('canvas-wrap');
 		buttonList[i].position(
 			170 * (size.width / canvasSize.width),
-			330 * (size.height / canvasSize.height)
+			300 * (size.height / canvasSize.height)
 		);
 		buttonList[i].style('textFont', fonts.rainyHeart);
 		buttonList[i].style('background-color', COLORS.button_active);

@@ -145,7 +145,8 @@ function setup() {
 	//togglePanel();
 	createButtons();
 	assignPosition();
-	//sounds.bgm.play();
+	sounds.bgm.play();
+	sounds.bgm.setVolume(0.1);
 }
 
 function draw() {
