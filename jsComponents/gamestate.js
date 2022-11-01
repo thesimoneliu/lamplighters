@@ -9,22 +9,89 @@ function titleState() {
 	pop();
 }
 
+/* ------------ state name: onboarding ---------- */
+function onboardingState() {
+	push();
+	hideButtons();
+	background(COLORS.bgColor_onboarding);
+	// show the map
+	image(images.mapDisplay_onboarding, 0, 0);
+	// show other players
+	drawAllPlayers();
+	// show my avatar
+	image(AVATAR[me.avatar][me.direction], me.xPos, me.yPos);
+	// drawGrid();
+
+	// text showing the number of players in room
+	push();
+	textAlign(CENTER);
+
+	if (guests.length < 4) {
+		textSize(12);
+		// display how many players logged in
+		fill(COLORS.intro_text);
+		text(guests.length, width / 2 - 60, 60);
+		fill(COLORS.intro_caption);
+		text(' /4 players in your team', width / 2, 60);
+	} else {
+		// calculate how many players are at the gate
+		calcPlayerAtGate();
+		if (shared.playerAtGate < 4) {
+			fill(COLORS.intro_caption);
+			textSize(12);
+			// display successful team
+			text('Your team is built', width / 2, 50);
+			text('Get to the exit together', width / 2, 62);
+			text('You cannot win alone', width / 2, 74);
+
+			// display how many players are at the gate
+			fill(COLORS.intro_text);
+			textSize(16);
+			text(shared.playerAtGate + ' /4 players at the exit', width / 2, 100);
+		} else {
+			fill(COLORS.intro_text);
+			textSize(16);
+			text('Your team made it to the exit!', width / 2, 82);
+		}
+	}
+	pop();
+
+	if (
+		isGate(shared.gameState_Name, guests[0].row, guests[0].col) &&
+		isGate(shared.gameState_Name, guests[1].row, guests[1].col) &&
+		isGate(shared.gameState_Name, guests[2].row, guests[2].col) &&
+		isGate(shared.gameState_Name, guests[3].row, guests[3].col)
+	) {
+		startGameButton.show();
+		changeButtonStyle(); // change the status of startGameButton
+	}
+	pop();
+}
+
 /* ------------ state name: intro ---------- */
 function introState() {
+	shared.playerAtGate = PLAYER_AT_GATE;
+	assignPosition();
+
 	push();
+
 	image(images.IntroBG, 0, 0, 400, 400);
 	hideButtons();
-	startGameButton.show();
-	// background rect
-	fill('#251F1E');
-	noStroke();
-	rect(135, 305, 130, 60);
-	// text showing the number of players in room
-	fill(COLORS.intro_text);
-	textSize(16);
-	text('PLAYERS: (' + guests.length + '/4) . . .', 200, 310);
+	// display loading text
+	textAlign(CENTER);
+	textSize(20);
+	fill(255);
+	text('Loading', width / 2, 310);
+
+	// countdown 10 seconds
+	if (frameCount % 30 === 0) {
+		shared.countdown_onBoarding--;
+	}
+	if (shared.countdown_onBoarding === 0) {
+		changeState();
+	}
+
 	pop();
-	changeButtonStyle(); // change the status of startGameButton
 }
 
 /* ------------ state name: main ---------- */
@@ -52,13 +119,13 @@ function mainState() {
 	lightenLamp();
 	blendMode(MULTIPLY);
 	// show the map
-	image(images.mapDisplay, 0, 0);
+	image(images.mapDisplay_main, 0, 0);
 	// show my avatar
 	blendMode(BLEND);
 	// show other players
 	drawAllPlayers();
 	image(AVATAR[me.avatar][me.direction], me.xPos, me.yPos);
-	//drawGrid();
+	drawGrid();
 	// console.log(me.role, me.avatar, me.xPos, me.yPos);
 
 	/* -------------- Objects -------------- */
@@ -117,10 +184,10 @@ function mainState() {
 
 	// change all players' state based on countdown value
 	if (
-		isGate(guests[0].row, guests[0].col) &&
-		isGate(guests[1].row, guests[1].col) &&
-		isGate(guests[2].row, guests[2].col) &&
-		isGate(guests[3].row, guests[3].col) &&
+		isGate(shared.gameState_Name, guests[0].row, guests[0].col) &&
+		isGate(shared.gameState_Name, guests[1].row, guests[1].col) &&
+		isGate(shared.gameState_Name, guests[2].row, guests[2].col) &&
+		isGate(shared.gameState_Name, guests[3].row, guests[3].col) &&
 		shared.countdown > 0
 	) {
 		changeState('winning');
@@ -128,10 +195,10 @@ function mainState() {
 		changeState('losing');
 	}
 	// console.log(
-	// 	isGate(guests[0].row, guests[0].col),
-	// 	isGate(guests[1].row, guests[1].col),
-	// 	isGate(guests[2].row, guests[2].col),
-	// 	isGate(guests[3].row, guests[3].col)
+	// 	isGate(shared.gameState_Name,guests[0].row, guests[0].col),
+	// 	isGate(shared.gameState_Name,guests[1].row, guests[1].col),
+	// 	isGate(shared.gameState_Name,guests[2].row, guests[2].col),
+	// 	isGate(shared.gameState_Name,guests[3].row, guests[3].col)
 	// );
 
 	/* -------------- UI Elements: Countdown & Score -------------- */
@@ -163,10 +230,9 @@ function mainState() {
 /* ------------ state name: winning ---------- */
 function winningState() {
 	image(images.winBG, 0, 0, 400, 400);
-	image(images.winGateGIF, -10, 0);
 	restartButton_win.show();
 	sounds.win.play();
-	if (isGate(me.row, me.col)) {
+	if (isGate(shared.gameState_Name, me.row, me.col)) {
 		console.log('you win');
 	}
 }
@@ -174,7 +240,6 @@ function winningState() {
 /* ------------ state name: losing --------- */
 function losingState() {
 	image(images.loseBG, 0, 0, 400, 400);
-	// image(images.loseGIF, -10, 0);
 	restartButton_lose.show();
 	sounds.lose.play();
 }

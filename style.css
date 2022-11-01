@@ -8,8 +8,8 @@ body {
 }
 
 canvas {
-	/* width: 800px !important;
-	height: 800px !important; */
+	width: 800px !important;
+	height: 800px !important;
 	image-rendering: pixelated;
 }
 
@@ -38,6 +38,7 @@ button {
 
 
 #game-rules {
+	display:none;
 	position: absolute;
 	width: 100%;
 	bottom: 0;

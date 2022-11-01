@@ -15,17 +15,23 @@ const size = {
 	width: window.innerWidth,
 	height: window.innerHeight,
 };
+const canvasZoomSize = {
+	width: 800,
+	height: 800,
+};
 
-const SCALEX = 4;
-const SCALEY = 4;
+const SCALEX = 1;
+const SCALEY = 1;
 // const VIEW_WIDTH = 400/GRID_SIZE/SCALEX;
 // const VIEW_HEIGHT = 400/GRID_SIZE/SCALEY;
 const mainCamera = { x: 0, y: 0 };
 
 // variables passed to shared
-const COUNT_DOWN = 100;
+const COUNT_DOWN = 80;
+const COUNT_DOWN_ONBOARDING = 10;
 const SCORE = 5;
 const PLAYER_NUM_LIMIT = 4;
+const PLAYER_AT_GATE = 0;
 
 let lightRadius = 10;
 let biggerLight = false;
@@ -46,6 +52,14 @@ const GATE = {
 	width: 6, //29
 	height: 4, //28
 };
+
+const GATE_ONBOARDING = {
+	row: 20 + 4 - 2, //24
+	col: 16 + 5 - 2, //23
+	width: 11, //29
+	height: 5, //28
+};
+
 
 const PLAYERS = [
 	{
@@ -97,8 +111,10 @@ const LAMP_OIL = {
 };
 
 const COLORS = {
+	bgColor_onboarding:'#342B29',
 	button_active: '#CF6831',
 	button_border: '#8f5535',
 	button_inactive: '#F8C6AB',
 	intro_text: '#FFB036',
+	intro_caption: '#CACACA'
 };

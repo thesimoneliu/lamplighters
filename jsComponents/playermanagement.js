@@ -1,6 +1,5 @@
 /* ------------------------- Player Management ------------------------- */
 
-
 function drawAllPlayers() {
 	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
 		if (i < guests.length) {
@@ -45,6 +44,17 @@ function assignPosition() {
 	}
 }
 
+function assignRandomPosition() {
+	let position = generateRandomPosition();
+	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
+		if (i < guests.length) {
+			
+			guests[i].row = position.row;
+			guests[i].col = position.col;
+		}
+	}
+}
+
 function assignPlayers() {
 	for (let i = 0; i < PLAYER_NUM_LIMIT; i++) {
 		if (!guests.find((p) => p.role === 'player' + i)) {
@@ -59,6 +69,4 @@ function assignPlayers() {
 			}
 		}
 	}
-
-	
 }

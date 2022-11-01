@@ -24,7 +24,7 @@ function drawGrid() {
 		}
 	}
 
-  //winGate position
+	// winGate position
 	stroke('red');
 	strokeWeight(2);
 	noFill();
@@ -33,6 +33,17 @@ function drawGrid() {
 		GATE.row * GRID_SIZE,
 		GATE.width * GRID_SIZE,
 		GATE.height * GRID_SIZE
+	);
+
+	// onboardingGate position
+	stroke('green');
+	strokeWeight(2);
+	noFill();
+	rect(
+		GATE_ONBOARDING.col * GRID_SIZE,
+		GATE_ONBOARDING.row * GRID_SIZE,
+		GATE_ONBOARDING.width * GRID_SIZE,
+		GATE_ONBOARDING.height * GRID_SIZE
 	);
 }
 

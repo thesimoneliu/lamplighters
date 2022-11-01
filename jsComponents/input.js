@@ -1,10 +1,11 @@
 /* ------------------- INPUT CONTROLLERS ------------------- */
 
 function createButtons() {
-	// let newCanvas = newCanvasSize();
+	push();
+	let newCanvas = newCanvasSize();
 	// translate(newCanvas.x, newCanvas.y);
 	readyButton = createButton("I'M READY!");
-	startGameButton = createButton('START');
+	startGameButton = createButton('Let\'s Go!');
 	restartButton_win = createButton('RESTART');
 	restartButton_lose = createButton('TRY AGAIN');
 
@@ -38,6 +39,8 @@ function createButtons() {
 			buttonList[i].mousePressed(changeState);
 		}
 	}
+
+	pop();
 }
 
 function changeButtonStyle() {
@@ -56,25 +59,26 @@ function hideButtons() {
 }
 
 function keyPressed() {
-	if(isWall(me.row, me.col - 1)){
-		sounds.hitWall.play();
-	}
-	if (keyCode === LEFT_ARROW && !isWall(me.row, me.col - 1)) {
+	// if hit wall play sfx
+	// if (isWall(shared.gameState_Name, me.row, me.col - 1)) {
+	// 	sounds.hitWall.play();
+	// }
+	if (keyCode === LEFT_ARROW && !isWall(shared.gameState_Name, me.row, me.col - 1)) {
 		me.col--;
 		me.direction = 'left';
-		// console.log('left', me.row, me.col);
-	} else if (keyCode === RIGHT_ARROW && !isWall(me.row, me.col + 1)) {
+		console.log('left', me.row, me.col);
+	} else if (keyCode === RIGHT_ARROW && !isWall(shared.gameState_Name, me.row, me.col + 1)) {
 		me.col++;
 		me.direction = 'right';
-		// console.log('right', me.row, me.col);
-	} else if (keyCode === UP_ARROW && !isWall(me.row - 1, me.col)) {
+		console.log('right', me.row, me.col);
+	} else if (keyCode === UP_ARROW && !isWall(shared.gameState_Name, me.row - 1, me.col)) {
 		me.row--;
 		me.direction = 'up';
-		// console.log('up', me.row, me.col);
-	} else if (keyCode === DOWN_ARROW && !isWall(me.row + 1, me.col)) {
+		console.log('up', me.row, me.col);
+	} else if (keyCode === DOWN_ARROW && !isWall(shared.gameState_Name, me.row + 1, me.col)) {
 		me.row++;
 		me.direction = 'down';
-		// console.log('down', me.row, me.col);
+		console.log('down', me.row, me.col);
 	}
 }
 
